@@ -38,28 +38,37 @@ pixelSlider.addEventListener("input", function () {
 function drawPixelArt() {
     const size = parseInt(pixelSlider.value);
 
-    // tworzymy tymczasowy canvas do zmniejszenia obrazu
+    const imgWidth = originalImage.width;
+    const imgHeight = originalImage.height;
+
+    // maksymalny rozmiar
+    const MAX_SIZE = 800;
+
+    // obliczamy skalę tak, aby nie przekroczyć 800x800
+    const scale = Math.min(MAX_SIZE / imgWidth, MAX_SIZE / imgHeight);
+
+    const canvasWidth = Math.floor(imgWidth * scale);
+    const canvasHeight = Math.floor(imgHeight * scale);
+
+    // ustawiamy dynamiczny rozmiar canvas
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+
+    // tworzymy tymczasowy canvas do zmniejszenia
     const tempCanvas = document.createElement("canvas");
     const tempCtx = tempCanvas.getContext("2d");
 
     tempCanvas.width = size;
-    tempCanvas.height = size;
+    tempCanvas.height = Math.floor(size * (imgHeight / imgWidth));
 
-    // zmniejszenie obrazu
     tempCtx.imageSmoothingEnabled = false;
-    tempCtx.drawImage(originalImage, 0, 0, size, size);
+    tempCtx.drawImage(originalImage, 0, 0, tempCanvas.width, tempCanvas.height);
 
-    // wyczyszczenie głównego canvas
-    ctx.clearRect(0, 0, WINDOW_SIZE, WINDOW_SIZE);
-
-    // wyłączenie wygładzania
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     ctx.imageSmoothingEnabled = false;
 
-    // powiększenie do 600x600
-    ctx.drawImage(tempCanvas, 0, 0, WINDOW_SIZE, WINDOW_SIZE);
-
-    const scale = WINDOW_SIZE / size;
+    ctx.drawImage(tempCanvas, 0, 0, canvasWidth, canvasHeight);
 
     infoText.textContent =
-        `Pixel-art: ${size}×${size}px | Rozmiar piksela: ${scale.toFixed(2)}px`;
+        `Pixel-art: ${tempCanvas.width}×${tempCanvas.height}px`;
 }
