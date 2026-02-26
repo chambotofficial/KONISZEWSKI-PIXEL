@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Pixel Art Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Pixel Art Converter</h1>
+
+    <input type="file" id="imageInput" accept="image/*">
+
+    <div class="slider-container">
+        <label for="pixelSlider">
+            Ilość pikseli (szerokość):
+            <span id="pixelValue">32</span>
+        </label>
+        <input type="range" id="pixelSlider" min="4" max="512" value="32">
+    </div>
+
+    <canvas id="canvas" width="600" height="600"></canvas>
+
+    <p id="infoText"></p>
+
+    <script src="script.js"></script>
+</body>
+</html>
